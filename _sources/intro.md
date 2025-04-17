@@ -1,3 +1,12 @@
+---
+jupytext:
+  formats: md:myst
+kernelspec:
+  name: python3
+  display_name: Python 3
+---
+
+
 # Welcome to RL4R 👋
 
 This site explores Reinforcement Learning for Robotics.
@@ -10,4 +19,11 @@ This site explores Reinforcement Learning for Robotics.
 
 ## 🚀 Let's start learning!
 
+
+## 💻 Try it yourself!
+
+
+```{code-cell}
+print("Hello, this is a live cell!")
+```
 
