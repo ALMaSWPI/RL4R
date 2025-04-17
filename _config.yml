@@ -38,6 +38,8 @@ html:
   extra_css:
     - _static/custom.css
   
+use_thebe: true
+
 launch_buttons:
   thebe: true
   binderhub_url: "https://mybinder.org"
