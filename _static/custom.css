@@ -1,21 +1,24 @@
-/* Hide Thebe toolbar buttons */
+/* Hide the Thebe toolbar buttons (optional) */
 .thebe-launch-button,
-.thebe-status {
+.thebe-status,
+.thebe-toolbar-button {
   display: none !important;
 }
 
-/* Style input and output boxes more like notebooks */
-div.cell {
+/* Style Thebe code inputs */
+.thebe-cell .input_area {
   background-color: #1e1e1e;
-  border-radius: 5px;
+  border-radius: 6px;
   padding: 1em;
-  margin-bottom: 1em;
-  border: 1px solid #444;
+  font-family: monospace;
+  color: #eee;
 }
 
-div.output {
+/* Style Thebe outputs */
+.thebe-cell .output_area {
   background-color: #111;
-  border-radius: 5px;
+  color: #ddd;
+  border-radius: 6px;
   padding: 1em;
-  color: #ccc;
+  margin-top: 0.5em;
 }
