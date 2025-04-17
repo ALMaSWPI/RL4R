@@ -1,0 +1,19 @@
+.thebe-launch-button {
+  display: none;
+}
+
+.thebe-status {
+  display: none;
+}
+
+.thebe-cell .thebe-activity {
+  margin-top: 0.5rem;
+}
+
+.thebe-cell pre {
+  background: #1e1e1e;
+  color: #dcdcdc;
+  padding: 1em;
+  border-radius: 6px;
+}
+
