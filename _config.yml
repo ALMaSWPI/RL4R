@@ -44,4 +44,4 @@ launch_buttons:
 
 thebe:
   selector: "div.cell"
-
+  always_load: true
