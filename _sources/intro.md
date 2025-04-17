@@ -11,5 +11,3 @@ This site explores Reinforcement Learning for Robotics.
 ## 🚀 Let's start learning!
 
 
-```{code-cell}
-print("Hello, this is a live cell!")
