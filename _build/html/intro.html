@@ -468,6 +468,95 @@ document.write(`
 </div>
 </div>
 <p>Now, let’s see a code for 10-arm bandit problem with some explanations:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="c1"># Parameters</span>
+<span class="n">k</span> <span class="o">=</span> <span class="mi">10</span>            <span class="c1"># number of arms</span>
+<span class="n">steps</span> <span class="o">=</span> <span class="mi">1000</span>      <span class="c1"># number of steps per run</span>
+<span class="n">runs</span> <span class="o">=</span> <span class="mi">1000</span>       <span class="c1"># number of independent runs</span>
+<span class="n">epsilon</span> <span class="o">=</span> <span class="mf">0.1</span>     <span class="c1"># exploration rate for epsilon-greedy</span>
+
+<span class="c1"># Store all rewards and optimal action tracking from all runs</span>
+<span class="n">all_rewards</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">runs</span><span class="p">,</span> <span class="n">steps</span><span class="p">))</span>
+<span class="n">optimal_action_counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">runs</span><span class="p">,</span> <span class="n">steps</span><span class="p">))</span>
+
+<span class="c1"># Run simulation</span>
+<span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">runs</span><span class="p">):</span>
+    <span class="c1"># Step 1: Initialize the true action values (q*) for this run</span>
+    <span class="n">q_star</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>  <span class="c1"># true values for each arm</span>
+    <span class="n">optimal_action</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">q_star</span><span class="p">)</span>  <span class="c1"># the actual best action</span>
+
+    <span class="c1"># Step 2: Initialize estimated values and action counts</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>         <span class="c1"># estimated value of each action</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>         <span class="c1"># number of times each action has been selected</span>
+
+    <span class="c1"># Step 3: Loop over time steps</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span><span class="p">):</span>
+        <span class="c1"># Epsilon-greedy action selection</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">epsilon</span><span class="p">:</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>  <span class="c1"># explore: random action</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span>          <span class="c1"># exploit: best known action</span>
+
+        <span class="c1"># Check if selected action is the optimal one</span>
+        <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="n">optimal_action</span><span class="p">:</span>
+            <span class="n">optimal_action_counts</span><span class="p">[</span><span class="n">run</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="c1"># Get reward from environment (with noise)</span>
+        <span class="n">reward</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">q_star</span><span class="p">[</span><span class="n">action</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Update action count and estimate</span>
+        <span class="n">N</span><span class="p">[</span><span class="n">action</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">N</span><span class="p">[</span><span class="n">action</span><span class="p">]</span>
+        <span class="n">Q</span><span class="p">[</span><span class="n">action</span><span class="p">]</span> <span class="o">+=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="p">(</span><span class="n">reward</span> <span class="o">-</span> <span class="n">Q</span><span class="p">[</span><span class="n">action</span><span class="p">])</span>
+
+        <span class="c1"># Store reward</span>
+        <span class="n">all_rewards</span><span class="p">[</span><span class="n">run</span><span class="p">,</span> <span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">reward</span>
+
+<span class="c1"># Compute average reward and optimal action percentage at each time step</span>
+<span class="n">avg_rewards</span> <span class="o">=</span> <span class="n">all_rewards</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">optimal_action_percent</span> <span class="o">=</span> <span class="n">optimal_action_counts</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+
+<span class="c1"># Print the final selected greedy action based on last Q</span>
+<span class="n">final_action</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Final selected action: </span><span class="si">{</span><span class="n">final_action</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;q_star: </span><span class="si">{</span><span class="n">q_star</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Plotting average reward</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">avg_rewards</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">fr</span><span class="s1">&#39;$\varepsilon = </span><span class="si">{</span><span class="n">epsilon</span><span class="si">}</span><span class="s1">$ (epsilon-greedy)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Steps&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Average reward&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">fr</span><span class="s2">&quot;Epsilon-Greedy Action Selection ($\varepsilon = </span><span class="si">{</span><span class="n">epsilon</span><span class="si">}</span><span class="s2">$)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Plotting optimal action percentage</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">optimal_action_percent</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;% Optimal Action&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Steps&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;% Optimal Action&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Percentage of Optimal Action Over Time&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Final selected action: 9
+q_star: [-0.35678929 -1.48857828 -0.98505863  0.64532658 -0.40713135  0.07165785
+ -0.77936839  0.79841571 -0.94983811  1.40509239]
+</pre></div>
+</div>
+<img alt="_images/adc24873f8b51e9339750c37e225ca01c3c82cc6e862560b7daab14395366244.png" src="_images/adc24873f8b51e9339750c37e225ca01c3c82cc6e862560b7daab14395366244.png" />
+<img alt="_images/b7578aea58bc25e4986238fc5a752b8261c1b7e339c5e7496fe774e6cee854f4.png" src="_images/b7578aea58bc25e4986238fc5a752b8261c1b7e339c5e7496fe774e6cee854f4.png" />
+</div>
+</div>
 </section>
 <div class="toctree-wrapper compound">
 </div>
