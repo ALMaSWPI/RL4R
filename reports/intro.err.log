@@ -1,0 +1,117 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.13.3/x64/lib/python3.13/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+    ~~~~~~~~~^
+        nb,
+        ^^^
+    ...<4 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    )
+    ^
+  File "/opt/hostedtoolcache/Python/3.13.3/x64/lib/python3.13/site-packages/nbclient/client.py", line 1319, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/opt/hostedtoolcache/Python/3.13.3/x64/lib/python3.13/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.13.3/x64/lib/python3.13/asyncio/base_events.py", line 719, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/opt/hostedtoolcache/Python/3.13.3/x64/lib/python3.13/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+        cell, index, execution_count=self.code_cells_executed + 1
+    )
+  File "/opt/hostedtoolcache/Python/3.13.3/x64/lib/python3.13/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/hostedtoolcache/Python/3.13.3/x64/lib/python3.13/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameters
+k = 10            # number of arms
+steps = 1000      # number of steps per run
+runs = 1000       # number of independent runs
+epsilon = 0.1     # exploration rate for epsilon-greedy
+
+# Store all rewards and optimal action tracking from all runs
+all_rewards = np.zeros((runs, steps))
+optimal_action_counts = np.zeros((runs, steps))
+
+# Run simulation
+for run in range(runs):
+    # Step 1: Initialize the true action values (q*) for this run
+    q_star = np.random.normal(0, 1, k)  # true values for each arm
+    optimal_action = np.argmax(q_star)  # the actual best action
+
+    # Step 2: Initialize estimated values and action counts
+    Q = np.zeros(k)         # estimated value of each action
+    N = np.zeros(k)         # number of times each action has been selected
+
+    # Step 3: Loop over time steps
+    for t in range(steps):
+        # Epsilon-greedy action selection
+        if np.random.rand() < epsilon:
+            action = np.random.randint(k)  # explore: random action
+        else:
+            action = np.argmax(Q)          # exploit: best known action
+
+        # Check if selected action is the optimal one
+        if action == optimal_action:
+            optimal_action_counts[run, t] = 1
+
+        # Get reward from environment (with noise)
+        reward = np.random.normal(q_star[action], 1)
+
+        # Update action count and estimate
+        N[action] += 1
+        alpha = 1 / N[action]
+        Q[action] += alpha * (reward - Q[action])
+
+        # Store reward
+        all_rewards[run, t] = reward
+
+# Compute average reward and optimal action percentage at each time step
+avg_rewards = all_rewards.mean(axis=0)
+optimal_action_percent = optimal_action_counts.mean(axis=0) * 100
+
+# Print the final selected greedy action based on last Q
+final_action = np.argmax(Q)
+print(f"Final selected action: {final_action}")
+print(f"q_star: {q_star}")
+
+# Plotting average reward
+plt.figure(figsize=(10, 5))
+plt.plot(avg_rewards, color='blue', label=fr'$\varepsilon = {epsilon}$ (epsilon-greedy)')
+plt.xlabel("Steps")
+plt.ylabel("Average reward")
+plt.title(fr"Epsilon-Greedy Action Selection ($\varepsilon = {epsilon}$)")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# Plotting optimal action percentage
+plt.figure(figsize=(10, 5))
+plt.plot(optimal_action_percent, color='purple', label="% Optimal Action")
+plt.xlabel("Steps")
+plt.ylabel("% Optimal Action")
+plt.title("Percentage of Optimal Action Over Time")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+------------------
+
+
+[31m---------------------------------------------------------------------------[39m
+[31mModuleNotFoundError[39m                       Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[2][39m[32m, line 1[39m
+[32m----> [39m[32m1[39m [38;5;28;01mimport[39;00m[38;5;250m [39m[34;01mnumpy[39;00m[38;5;250m [39m[38;5;28;01mas[39;00m[38;5;250m [39m[34;01mnp[39;00m
+[32m      2[39m [38;5;28;01mimport[39;00m[38;5;250m [39m[34;01mmatplotlib[39;00m[34;01m.[39;00m[34;01mpyplot[39;00m[38;5;250m [39m[38;5;28;01mas[39;00m[38;5;250m [39m[34;01mplt[39;00m
+[32m      4[39m [38;5;66;03m# Parameters[39;00m
+
+[31mModuleNotFoundError[39m: No module named 'numpy'
+
