@@ -1,19 +1,21 @@
-.thebe-launch-button {
-  display: none;
-}
-
+/* Hide Thebe toolbar buttons */
+.thebe-launch-button,
 .thebe-status {
-  display: none;
+  display: none !important;
 }
 
-.thebe-cell .thebe-activity {
-  margin-top: 0.5rem;
-}
-
-.thebe-cell pre {
-  background: #1e1e1e;
-  color: #dcdcdc;
+/* Style input and output boxes more like notebooks */
+div.cell {
+  background-color: #1e1e1e;
+  border-radius: 5px;
   padding: 1em;
-  border-radius: 6px;
+  margin-bottom: 1em;
+  border: 1px solid #444;
 }
 
+div.output {
+  background-color: #111;
+  border-radius: 5px;
+  padding: 1em;
+  color: #ccc;
+}
