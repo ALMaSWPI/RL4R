@@ -38,7 +38,7 @@ html:
   extra_css:
     - _static/custom.css
   
-use_thebe: true
+#use_thebe: true
 
 launch_buttons:
   thebe: true
@@ -46,4 +46,4 @@ launch_buttons:
 
 thebe:
   selector: "div.cell"
-  always_load: true
+  #always_load: true
