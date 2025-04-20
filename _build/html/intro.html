@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=e5844d21" />
@@ -525,16 +525,21 @@ document.write(`
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Final estimated Q-values: [-0.93616593 -0.4282114  -0.53577175  0.1307951  -0.23931818 -0.1190942
- -1.1270429  -1.63687006  0.7226173  -0.24888741]
-True action values (q*): [-0.90836727 -0.28565746 -0.24732666 -0.02511757  0.0656636  -0.06014338
- -1.41818031 -1.26253168  0.71360288 -0.15563407]
-Final selected action: 8
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Final estimated Q-values: [ 1.89718199 -0.48634371 -0.56881731 -0.30615753 -0.39975732 -0.08577066
+ -2.22434517 -1.85874037  0.62113899  0.27065884]
+True action values (q*): [ 1.91858702 -0.82111469 -0.25202646 -0.1708329   0.52859694 -0.02398282
+ -1.50170494 -1.94579621  0.96336805 -0.41344758]
+Final selected action: 0
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot average reward</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
@@ -548,11 +553,17 @@ Final selected action: 8
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<img alt="_images/78e850a64b1e6c3c5c47d46bd6e08119e084f831dfde9b7c606bf25933ad7c15.png" src="_images/78e850a64b1e6c3c5c47d46bd6e08119e084f831dfde9b7c606bf25933ad7c15.png" />
+<img alt="_images/ed778dcd151e7b9f9ed57676ac6e5d614e56802f43098b1e129f274f163c15a6.png" src="_images/ed778dcd151e7b9f9ed57676ac6e5d614e56802f43098b1e129f274f163c15a6.png" />
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot % optimal action</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
@@ -566,8 +577,9 @@ Final selected action: 8
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<img alt="_images/ac13ad073dbe41b475bdef1b373b1af8538b80b371aeb02558e5dbbb6263dc73.png" src="_images/ac13ad073dbe41b475bdef1b373b1af8538b80b371aeb02558e5dbbb6263dc73.png" />
+<img alt="_images/43fb05e21731a3e3ae97cb8e5e05baac8a700dc56e792b66bbdb1d0bbce47b0a.png" src="_images/43fb05e21731a3e3ae97cb8e5e05baac8a700dc56e792b66bbdb1d0bbce47b0a.png" />
 </div>
 </div>
 </section>
